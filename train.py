@@ -17,3 +17,5 @@ if __name__ == "__main__":
     lstm_units = int(sys.argv[0])
 
     trained_model = main(lstm_units)
+
+    # TODO: use tf saver to export trained model
