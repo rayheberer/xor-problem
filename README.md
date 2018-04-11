@@ -1,6 +1,6 @@
 # XOR Problem
 
-This repository contains the notebook with which I worked through the first of two warmup [problems posed by OpenAI](https://blog.openai.com/requests-for-research-2/).
+This repository contains the notebook and scripts with which I worked through the first of two warmup [problems posed by OpenAI](https://blog.openai.com/requests-for-research-2/).
 
 ## Problem Statement
 
