@@ -38,23 +38,35 @@ class LSTM(object):
 
             self.predictions = tf.reshape(tf.squeeze(tf.argmax(self.h, axis=1)), (-1, 1))
 
-def train_model(model, epochs=1, batch_size=1, dataset_size=100000):
+def train_model(model, data, labels, lengths,
+    epochs=1, batch_size=1, dataset_size=100000, ckpt=False):
     num_batches = dataset_size//batch_size
+    ordinal_labels = np.array([np.where(r==1)[0][0] for r in labels])
     
     with model.g.as_default():
+        saver = tf.train.Saver()
+
         sess = tf.Session()
         init = tf.global_variables_initializer()
         sess.run(init)
+
+        if ckpt:
+            saver.restore(sess, "/tmp/model.ckpt")
+            print("Model restored.")
+
         for t in range(epochs):
             print("Epoch {}\n".format(t+1))
             for i in range(0, num_batches, batch_size):
-                X_batch = data1[i:i+batch_size]
-                Y_batch = labels1_one_hot[i:i+batch_size]
-                X_len_batch = lengths1[i:i+batch_size]
+                X_batch = data[i:i+batch_size]
+                Y_batch = labels[i:i+batch_size]
+                X_len_batch = lengths[i:i+batch_size]
                 _  = sess.run(model.train_op, feed_dict={model.X: X_batch, model.Y: Y_batch, model.X_len: X_len_batch})
 
                 if i % 5000 == 0:
-                    loss_ = sess.run(model.loss, feed_dict={model.X: data1, model.Y: labels1_one_hot, model.X_len: lengths1})
-                    pred = sess.run(model.predictions, feed_dict={model.X: data1, model.Y: labels1_one_hot, model.X_len: lengths1})
-                    accuracy = np.mean(pred == labels1)
+                    loss_ = sess.run(model.loss, feed_dict={model.X: data, model.Y: labels, model.X_len: lengths})
+                    pred = sess.run(model.predictions, feed_dict={model.X: data, model.Y: labels, model.X_len: lengths})
+                    accuracy = np.mean(pred == ordinal_labels)
                     print('iteration: {}, loss: {},  accuracy: {}'.format(i+1, loss_, accuracy))
+
+                    save_path = saver.save(sess, "/tmp/model.ckpt")
+                    print("Model saved in path: %s" % save_path)
