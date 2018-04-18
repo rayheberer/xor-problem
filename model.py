@@ -51,7 +51,7 @@ def train_model(model, data, labels, lengths,
         sess.run(init)
 
         if ckpt:
-            saver.restore(sess, "/tmp/model.ckpt")
+            saver.restore(sess, "/output/model.ckpt")
             print("Model restored.")
 
         for t in range(epochs):
@@ -68,5 +68,5 @@ def train_model(model, data, labels, lengths,
                     accuracy = np.mean(pred == ordinal_labels)
                     print('iteration: {}, loss: {},  accuracy: {}'.format(i+1, loss_, accuracy))
 
-                    save_path = saver.save(sess, "/tmp/model.ckpt")
+                    save_path = saver.save(sess, "/output/model.ckpt")
                     print("Model saved in path: %s" % save_path)
