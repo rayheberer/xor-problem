@@ -7,8 +7,14 @@ max_sequence_length = 50
 num_classes = 2
 
 def main(lstm_units):
+    print('Generating data...')
     data1, labels1, lengths1 = data.binary_equal_length(dataset_size, max_sequence_length)
+    
+    print('Building model...')
     LSTM = model.LSTM(lstm_units)
+    print('{} unit LSTM built'.format(lstm_units))
+
+    print('Training...')
     model.train_model(LSTM, data1, labels1, lengths1)
     return LSTM
 
