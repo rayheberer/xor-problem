@@ -1,3 +1,3 @@
-floyd run --gpu --env tensorflow-1.5 'python train.py 1'
+floyd run --gpu --env tensorflow-1.5 'python train.py 50 1'
 
-# argument to train.py is the number of LSTM units the model should have
+# arguments to train.py are the number of LSTM units the model should have, and the number of training epochs
